@@ -68,6 +68,7 @@ THIRD_PARTY_APPS = [
     'allauth.account',
     'allauth.socialaccount',
     'rest_framework',
+    'allauth.socialaccount.providers.twitch',
 ]
 LOCAL_APPS = [
     'streamerboard.users.apps.UsersConfig',
@@ -250,6 +251,10 @@ ACCOUNT_ADAPTER = 'streamerboard.users.adapters.AccountAdapter'
 # https://django-allauth.readthedocs.io/en/latest/configuration.html
 SOCIALACCOUNT_ADAPTER = 'streamerboard.users.adapters.SocialAccountAdapter'
 
+SOCIALACCOUNT_PROVIDERS = {
+            "twitch": {"SCOPE": ["user_read"]},
+    }
 
+TWITCH_KEY = '5hfhab54l3d3vx38s59z5i6ek8z2vg'
 # Your stuff...
 # ------------------------------------------------------------------------------
