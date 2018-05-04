@@ -3,6 +3,7 @@
 {% load i18n %}
 {% load account socialaccount %}
 {% load crispy_forms_tags %}
+{% load static%}
 
 {% block head_title %}{% trans "Sign In" %}{% endblock %}
 
@@ -44,5 +45,5 @@ for a {{ site_name }} account and sign in below:{% endblocktrans %}</p>
   <button class="primaryAction btn btn-primary" type="submit">{% trans "Sign In" %}</button>
 </form>
 
+<a href="{% provider_login_url 'twitch' %}"><img src="{% static 'Twitch_Login.png' %}" alt="test"></a>
 {% endblock %}
-

@@ -1,15 +1,16 @@
 {% extends "account/base.html" %}
-
+{% load account socialaccount %}
 {% load i18n %}
 {% load crispy_forms_tags %}
-
+{% load static %}
 {% block head_title %}{% trans "Signup" %}{% endblock %}
 
 {% block inner %}
+
 <h1>{% trans "Sign Up" %}</h1>
 
 <p>{% blocktrans %}Already have an account? Then please <a href="{{ login_url }}">sign in</a>.{% endblocktrans %}</p>
-
+<a href="{% provider_login_url 'twitch' %}"><img src="{% static 'Twitch_Login.png' %}" alt="test"></a>
 <form class="signup" id="signup_form" method="post" action="{% url 'account_signup' %}">
   {% csrf_token %}
   {{ form|crispy }}
@@ -18,6 +19,4 @@
   {% endif %}
   <button class="btn btn-primary" type="submit">{% trans "Sign Up" %} &raquo;</button>
 </form>
-
 {% endblock %}
-

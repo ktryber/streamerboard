@@ -68,7 +68,7 @@ THIRD_PARTY_APPS = [
     'allauth.account',
     'allauth.socialaccount',
     'rest_framework',
-    'allauth.socialaccount.providers.twitch',
+    'allauth.socialaccount.providers.twitch', # new
 ]
 LOCAL_APPS = [
     'streamerboard.users.apps.UsersConfig',
@@ -90,6 +90,10 @@ MIGRATION_MODULES = {
 AUTHENTICATION_BACKENDS = [
     'django.contrib.auth.backends.ModelBackend',
     'allauth.account.auth_backends.AuthenticationBackend',
+
+
+
+
 ]
 # https://docs.djangoproject.com/en/dev/ref/settings/#auth-user-model
 AUTH_USER_MODEL = 'users.User'
@@ -136,6 +140,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'social_django.middleware.SocialAuthExceptionMiddleware',
 ]
 
 # STATIC
@@ -191,6 +196,8 @@ TEMPLATES = [
                 'django.template.context_processors.static',
                 'django.template.context_processors.tz',
                 'django.contrib.messages.context_processors.messages',
+                'social_django.context_processors.backends',
+                'social_django.context_processors.login_redirect',
             ],
         },
     },
@@ -251,10 +258,5 @@ ACCOUNT_ADAPTER = 'streamerboard.users.adapters.AccountAdapter'
 # https://django-allauth.readthedocs.io/en/latest/configuration.html
 SOCIALACCOUNT_ADAPTER = 'streamerboard.users.adapters.SocialAccountAdapter'
 
-SOCIALACCOUNT_PROVIDERS = {
-            "twitch": {"SCOPE": ["user_read"]},
-    }
-
-TWITCH_KEY = '5hfhab54l3d3vx38s59z5i6ek8z2vg'
 # Your stuff...
 # ------------------------------------------------------------------------------
