@@ -11,3 +11,13 @@
   background-color: #f2dede;
   border-color: #eed3d7;
 }
+
+.post-list-box {
+  background-color: #f8f9fa;
+  border-radius: 5px;
+  border: 1px solid #e8e8e8;
+  padding-left: 10px;
+  padding-right: 10px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}

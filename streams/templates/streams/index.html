@@ -1,7 +1,63 @@
 {% extends 'base.html'%}
-
+{% load static %}
 {% block content %}
 <h1>Streams</h1>
+<div class="jumbotron">
+  <p>
+    Welcome to the streamerboard, get ranked and vote for your favorite
+    streamers
+  </p>
+  <!--<p>
+    <a class="btn btn-primary btn-lg" href="#"
+    role="button" data-toggle="modal" data-target="#addStreamModal">
+    Add Your Stream</a>
+  </p>-->
+  <form action="/create_post/" method="POST" id="add-stream-form">
+    {% csrf_token %}
+        {{ form.title }}<br />
+        {{ form.description }}
+    <div id="results"></div> <!-- errors go here -->
+    <input class="btn btn-primary btn-lg" type="submit" value="Add Stream">
+  </form>
+</div>
+<div class="row">
+  <div class="col-md-12">
+    <div id='stream-list'>
+      {% for stream in all_posts %}
+        <div class="post-list-box">
+          <h1>{{ stream.title }}</h1>
+          <h4>{{ stream.description }}</h4>
+          <a class="btn btn-warning " href="{% url 'streams:detail' pk=stream.pk %}">
+          View Stream</a>
+          <p>comment area</p>
+          Upvotes {{ stream.up_votes }}
+          Downvotes {{ stream.down_votes }}
+        </div>
+      {% endfor %}
+    </div>
+  </div>
 
-  
+</div>
+
+<!-- Modal -->
+<!--<div class="modal fade" id="addStreamModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+
+  </div>
+</div>-->
+
+
+<script type="text/javascript">
+// $('#addStreamModal').on('show.bs.modal', function (event) {
+//   var modal = $(this)
+//   $.ajax({
+//       url: "{% url 'streams:add_stream' %}",
+//       context: document.body
+//   }).done(function(response) {
+//       modal.html(response);
+//   });
+// })
+
+</script>
+
 {% endblock %}

@@ -1,9 +1,12 @@
+{% extends 'base.html' %}
+
+{% block content %}
 <form method="get">{% csrf_token %}
   <input type="text" name="user">
   <button type="submit">search on twitch</button>
 </form>
 
-<h1>You're watching {{user}}'s stream</h1>
+<h1>You're watching {{ streampost.author }}'s stream</h1>
 <!-- Add a placeholder for the Twitch embed -->
 <div id="SamplePlayerDivID"></div>
 
@@ -12,7 +15,7 @@
 
 <!-- Create a Twitch.Embed object that will render within the "twitch-embed" root element. -->
 <script type="text/javascript">
-var user = "{{user}}";
+var user = "{{streampost.author}}";
 var embed = new Twitch.Embed("SamplePlayerDivID",{
     width: 854,
     height: 480,
@@ -23,3 +26,4 @@ embed.addEventListener(Twitch.Embed.VIDEO_READY, () => {
   player.play();
 });
 </script>
+{% endblock %}
