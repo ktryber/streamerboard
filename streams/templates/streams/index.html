@@ -12,6 +12,7 @@
     role="button" data-toggle="modal" data-target="#addStreamModal">
     Add Your Stream</a>
   </p>-->
+  {% if user.is_authenticated %}
   <form action="/create_post/" method="POST" id="add-stream-form">
     {% csrf_token %}
         {{ form.title }}<br />
@@ -19,6 +20,7 @@
     <div id="results"></div> <!-- errors go here -->
     <input class="btn btn-primary btn-lg" type="submit" value="Add Stream">
   </form>
+  {% endif %}
 </div>
 <div class="row">
   <div class="col-md-12">
