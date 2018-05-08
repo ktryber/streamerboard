@@ -1,8 +1,11 @@
 from django.shortcuts import render
+from django.urls import reverse
 from django.http import HttpResponseRedirect, HttpResponse
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import (ListView, DetailView, UpdateView, CreateView,
                                 DeleteView, FormView, View)
+from django.shortcuts import get_object_or_404
+from django.views.generic import RedirectView
 from decouple import config
 import requests
 import json
@@ -85,5 +88,74 @@ class StreamDetailView(LoginRequiredMixin, DetailView):
     model = StreamPost
     template_name = 'streams/detail.html'
 
-def add_up_vote(request):
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework import authentication, permissions
+from django.contrib.auth.models import User
+
+class StreamUpvoteAPIToggle(APIView):
+    """
+    View to list all users in the system.
+
+    * Requires token authentication.
+    * Only admin users are able to access this view.
+    """
+    authentication_classes = (authentication.SessionAuthentication,)
+    permission_classes = (permissions.IsAuthenticated,)
+
+    def get(self, request, pk=None, format=None):
+        # pk = self.kwargs.get("pk")
+        obj = get_object_or_404(StreamPost, pk=pk)
+        url_ = obj.get_absolute_url()
+        user = self.request.user
+        updated = False
+        upvoted = False
+
+        if user.is_authenticated:
+            if user in obj.upvotes.all():
+                upvoted = False
+                obj.upvotes.remove(user)
+            else:
+                upvoted = True
+                obj.upvotes.add(user)
+            updated = True
+        data = {
+            "updated": updated,
+            "upvoted": upvoted,
+        }
+        return Response(data)
+
+class StreamUpvoteToggle(RedirectView):
     pass
+
+class StreamDownvoteAPIToggle(APIView):
+    """
+    View to list all users in the system.
+
+    * Requires token authentication.
+    * Only admin users are able to access this view.
+    """
+    authentication_classes = (authentication.SessionAuthentication,)
+    permission_classes = (permissions.IsAuthenticated,)
+
+    def get(self, request, pk=None, format=None):
+        # pk = self.kwargs.get("pk")
+        obj = get_object_or_404(StreamPost, pk=pk)
+        url_ = obj.get_absolute_url()
+        user = self.request.user
+        updated = False
+        downvoted = False
+
+        if user.is_authenticated:
+            if user in obj.upvotes.all():
+                downvoted = False
+                obj.upvotes.remove(user)
+            else:
+                downvoted = True
+                obj.upvotes.add(user)
+            updated = True
+        data = {
+            "updated": updated,
+            "downvoted": downvoted,
+        }
+        return Response(data)
