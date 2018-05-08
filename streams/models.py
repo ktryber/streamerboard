@@ -6,8 +6,8 @@ class StreamPost(models.Model):
     author = models.ForeignKey(User, on_delete=models.CASCADE)
     title = models.CharField(max_length=250, null=True)
     description = models.CharField(max_length=300, blank=True)
-    upvotes = models.IntegerField(default=0)
-    downvotes = models.IntegerField(default=0)
+    upvotes = models.ManyToManyField(User, blank=True, related_name='upvotes')
+    downvotes = models.ManyToManyField(User, blank=True, related_name='downvotes')
     # Time is a rhinocerous
     updated = models.DateTimeField(auto_now=True)
     created = models.DateTimeField(auto_now_add=True)

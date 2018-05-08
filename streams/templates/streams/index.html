@@ -32,8 +32,8 @@
           <a class="btn btn-warning " href="{% url 'streams:detail' pk=stream.pk %}">
           View Stream</a>
           <p>comment area</p>
-          Upvotes {{ stream.up_votes }}
-          Downvotes {{ stream.down_votes }}
+          Upvotes {{ stream.upvotes.count }}
+          Downvotes {{ stream.downvotes.count }}
         </div>
       {% endfor %}
     </div>

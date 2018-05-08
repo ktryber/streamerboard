@@ -55,8 +55,8 @@ def create_post(request):
         response_data['description'] = post.description
         response_data['created'] = post.created.strftime('%B %d, %Y %I:%M %p')
         response_data['author'] = post.author.username
-        response_data['upvotes'] = post.upvotes
-        response_data['downvotes'] = post.downvotes
+        response_data['upvotes'] = post.upvotes.count()
+        response_data['downvotes'] = post.downvotes.count()
 
         return HttpResponse(
             json.dumps(response_data),
