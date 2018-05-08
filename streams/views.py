@@ -6,6 +6,10 @@ from django.views.generic import (ListView, DetailView, UpdateView, CreateView,
                                 DeleteView, FormView, View)
 from django.shortcuts import get_object_or_404
 from django.views.generic import RedirectView
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework import authentication, permissions
+from django.contrib.auth.models import User
 from decouple import config
 import requests
 import json
@@ -88,10 +92,7 @@ class StreamDetailView(LoginRequiredMixin, DetailView):
     model = StreamPost
     template_name = 'streams/detail.html'
 
-from rest_framework.views import APIView
-from rest_framework.response import Response
-from rest_framework import authentication, permissions
-from django.contrib.auth.models import User
+
 
 class StreamUpvoteAPIToggle(APIView):
     """
@@ -125,8 +126,33 @@ class StreamUpvoteAPIToggle(APIView):
         }
         return Response(data)
 
+class StreamUpvoteDownvoteCountAPIView(APIView):
+    authentication_classes = (authentication.SessionAuthentication,)
+    permission_classes = (permissions.IsAuthenticated,)
+
+    def get(self, request, pk=None, format=None):
+        # pk = self.kwargs.get("pk")
+        obj = get_object_or_404(StreamPost, pk=pk)
+        upvote_count = obj.upvotes.count()
+        downvote_count = obj.downvotes.count()
+        data = {
+            "upvotes" : upvote_count,
+            "downvotes" : downvote_count,
+        }
+        return Response(data)
+
 class StreamUpvoteToggle(RedirectView):
-    pass
+    def get_redirect_url(self, *args, **kwargs):
+        pk = self.kwargs.get("pk")
+        obj = get_object_or_404(StreamPost, pk=pk)
+        url_ = obj.get_absolute_url()
+        user = self.request.user
+        if user.is_authenticated:
+            if user in obj.upvotes.all():
+                obj.upvotes.remove(user)
+            else:
+                obj.upvotes.add(user)
+        return url_
 
 class StreamDownvoteAPIToggle(APIView):
     """

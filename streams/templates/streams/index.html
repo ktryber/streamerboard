@@ -14,7 +14,6 @@
   </p>-->
   {% if user.is_authenticated %}
   <form action="/create_post/" method="POST" id="add-stream-form">
-    {% csrf_token %}
         {{ form.title }}<br />
         {{ form.description }}
     <div id="results"></div> <!-- errors go here -->
