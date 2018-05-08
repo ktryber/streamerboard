@@ -92,8 +92,6 @@ class StreamDetailView(LoginRequiredMixin, DetailView):
     model = StreamPost
     template_name = 'streams/detail.html'
 
-
-
 class StreamUpvoteAPIToggle(APIView):
     """
     View to list all users in the system.
@@ -126,21 +124,6 @@ class StreamUpvoteAPIToggle(APIView):
         }
         return Response(data)
 
-class StreamUpvoteDownvoteCountAPIView(APIView):
-    authentication_classes = (authentication.SessionAuthentication,)
-    permission_classes = (permissions.IsAuthenticated,)
-
-    def get(self, request, pk=None, format=None):
-        # pk = self.kwargs.get("pk")
-        obj = get_object_or_404(StreamPost, pk=pk)
-        upvote_count = obj.upvotes.count()
-        downvote_count = obj.downvotes.count()
-        data = {
-            "upvotes" : upvote_count,
-            "downvotes" : downvote_count,
-        }
-        return Response(data)
-
 class StreamUpvoteToggle(RedirectView):
     def get_redirect_url(self, *args, **kwargs):
         pk = self.kwargs.get("pk")
@@ -153,7 +136,6 @@ class StreamUpvoteToggle(RedirectView):
             else:
                 obj.upvotes.add(user)
         return url_
-
 class StreamDownvoteAPIToggle(APIView):
     """
     View to list all users in the system.
@@ -173,15 +155,43 @@ class StreamDownvoteAPIToggle(APIView):
         downvoted = False
 
         if user.is_authenticated:
-            if user in obj.upvotes.all():
+            if user in obj.downvotes.all():
                 downvoted = False
-                obj.upvotes.remove(user)
+                obj.downvotes.remove(user)
             else:
                 downvoted = True
-                obj.upvotes.add(user)
+                obj.downvotes.add(user)
             updated = True
         data = {
             "updated": updated,
             "downvoted": downvoted,
+        }
+        return Response(data)
+
+class StreamDownvoteToggle(RedirectView):
+    def get_redirect_url(self, *args, **kwargs):
+        pk = self.kwargs.get("pk")
+        obj = get_object_or_404(StreamPost, pk=pk)
+        url_ = obj.get_absolute_url()
+        user = self.request.user
+        if user.is_authenticated:
+            if user in obj.downvotes.all():
+                obj.downvotes.remove(user)
+            else:
+                obj.downvotes.add(user)
+        return url_
+
+class StreamUpvoteDownvoteCountAPIView(APIView):
+    authentication_classes = (authentication.SessionAuthentication,)
+    permission_classes = (permissions.IsAuthenticated,)
+
+    def get(self, request, pk=None, format=None):
+        # pk = self.kwargs.get("pk")
+        obj = get_object_or_404(StreamPost, pk=pk)
+        upvote_count = obj.upvotes.count()
+        downvote_count = obj.downvotes.count()
+        data = {
+            "upvotes" : upvote_count,
+            "downvotes" : downvote_count,
         }
         return Response(data)

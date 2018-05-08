@@ -9,14 +9,21 @@
 <h1>You're watching {{ streampost.author }}'s stream</h1>
 <p>
   Upvotes
+</p>
   <div class="upvote-count" data-href="{% url 'streams:vote-count' streampost.pk %}">
       {{ streampost.upvotes.count }}
   </div>
-
   <a class="upvote-btn" data-href='{{ streampost.get_api_upvote_url }}'
   href='{{ streampost.get_upvote_url }}'>Up</a>
 
-  Downvotes {{ streampost.downvotes.count }}
+  <p>
+    Downvotes
+  </p>
+  <div class="downvote-count" data-href="{% url 'streams:vote-count' streampost.pk %}">
+      {{ streampost.downvotes.count }}
+  </div>
+  <a class="downvote-btn" data-href="{{ streampost.get_api_downvote_url }}"
+  href='{{ streampost.get_downvote_url }}'>Down</a>
 </p>
 
 <!-- Add a placeholder for the Twitch embed -->
