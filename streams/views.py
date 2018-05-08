@@ -55,8 +55,8 @@ def create_post(request):
         response_data['description'] = post.description
         response_data['created'] = post.created.strftime('%B %d, %Y %I:%M %p')
         response_data['author'] = post.author.username
-        response_data['up_votes'] = post.up_votes
-        response_data['down_votes'] = post.down_votes
+        response_data['upvotes'] = post.upvotes
+        response_data['downvotes'] = post.downvotes
 
         return HttpResponse(
             json.dumps(response_data),
@@ -84,3 +84,6 @@ class AddStreamModalView(LoginRequiredMixin, CreateView):
 class StreamDetailView(LoginRequiredMixin, DetailView):
     model = StreamPost
     template_name = 'streams/detail.html'
+
+def add_up_vote(request):
+    if request.method == 'POST':

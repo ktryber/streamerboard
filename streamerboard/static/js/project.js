@@ -42,8 +42,8 @@ function create_post() {
             console.log(json); // log the returned json to the console
             $('#stream-list').prepend(
               "<div class='post-list-box'><h1>"+json.title+"</h1><h4>"+json.description+"</h4>"+
-              "<a class='btn btn-warning' href='/streams/detail/"+json.postpk+"/'>View Stream</a><p>comment area</p>Upvotes: "+json.up_votes+
-              " Downvotes: "+json.down_votes+"</div>"
+              "<a class='btn btn-warning' href='/streams/detail/"+json.postpk+"/'>View Stream</a><p>comment area</p>Upvotes: "+json.upvotes+
+              " Downvotes: "+json.downvotes+"</div>"
             )
             console.log("success"); // another sanity check
         },
