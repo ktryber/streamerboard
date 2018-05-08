@@ -86,4 +86,4 @@ class StreamDetailView(LoginRequiredMixin, DetailView):
     template_name = 'streams/detail.html'
 
 def add_up_vote(request):
-    if request.method == 'POST':
+    pass
