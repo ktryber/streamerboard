@@ -28,7 +28,7 @@ console.log("nothing")
 function create_post() {
     console.log("create post is working!") // sanity check
     $.ajax({
-        url : "create_post/", // the endpoint
+        url : "streams/create_post/", // the endpoint
         type : "POST", // http method
         data : {
           stream_title : $('#stream-title').val(),
@@ -42,9 +42,8 @@ function create_post() {
             console.log(json); // log the returned json to the console
             $('#stream-list').prepend(
               "<div class='post-list-box'><h1>"+json.title+"</h1><h4>"+json.description+"</h4>"+
-              "<a class='btn btn-warning' href='{% url 'streams:detail' pk=stream.pk %}'>"+
-              "View Stream</a><p>comment area</p>Upvotes {{ stream.up_votes }}"+
-              "Downvotes {{ stream.down_votes }}</div>"
+              "<a class='btn btn-warning' href='/streams/detail/"+json.postpk+"/'>View Stream</a><p>comment area</p>Upvotes: "+json.up_votes+
+              " Downvotes: "+json.down_votes+"</div>"
             )
             console.log("success"); // another sanity check
         },
