@@ -7,25 +7,6 @@
 </form>
 
 <h1>You're watching {{ streampost.author }}'s stream</h1>
-<div class="row">
-  <div class="col-sm-3">
-    <span class="upvote-count"data-href="{% url 'streams:vote-count' streampost.pk %}">
-      {{ streampost.upvotes.count }}
-    </span>
-    <a class="upvote-btn" data-href='{{ streampost.get_api_upvote_url }}'
-    href='{{ streampost.get_upvote_url }}'><i class="fas fa-thumbs-up"></i></a>
-
-    <span class="downvote-count" data-href="{% url 'streams:vote-count' streampost.pk %}">
-        {{ streampost.downvotes.count }}
-    </span>
-    <a class="downvote-btn" data-href="{{ streampost.get_api_downvote_url }}"
-    href='{{ streampost.get_downvote_url }}'><i class="fas fa-thumbs-down"></i></a>
-  </div>
-
-
-
-
-
 
 <!-- Add a placeholder for the Twitch embed -->
 <div id="SamplePlayerDivID"></div>
@@ -34,7 +15,7 @@
 <script src="https://embed.twitch.tv/embed/v1.js"></script>
 
 <!-- Create a Twitch.Embed object that will render within the "twitch-embed" root element. -->
-<!--<script type="text/javascript">
+<script type="text/javascript">
 var user = "{{streampost.author}}";
 var embed = new Twitch.Embed("SamplePlayerDivID",{
     width: 854,
@@ -45,6 +26,24 @@ embed.addEventListener(Twitch.Embed.VIDEO_READY, () => {
   var player = embed.getPlayer();
   player.play();
 });
-</script>-->
+</script>
+<div class="row">
+  <div class="col-sm-3 voting-buttons">
+    <a class="upvote-btn" data-href='{{ streampost.get_api_upvote_url }}'
+    href='{{ streampost.get_upvote_url }}'><i class="fas fa-thumbs-up"></i></a>
+
+    <span class="upvote-count" data-href="{% url 'streams:vote-count' pk=streampost.pk %}">
+      {{ streampost.upvotes.count }}
+    </span>
+
+
+    <a class="downvote-btn" data-href="{{ streampost.get_api_downvote_url }}"
+    href='{{ streampost.get_downvote_url }}'><i class="fas fa-thumbs-down"></i></a>
+
+    <span class="downvote-count" data-href="{% url 'streams:vote-count' pk=streampost.pk %}">
+        {{ streampost.downvotes.count }}
+    </span>
+  </div>
+</div>
 
 {% endblock %}
