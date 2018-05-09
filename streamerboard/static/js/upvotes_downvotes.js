@@ -1,11 +1,12 @@
 // code to execute the upvotes and downvotes
 
+
 // UPVOTE JQUERY
 $(".upvote-btn").click(function(e){
   e.preventDefault()
   var this_ = $(this)
   var upvoteToggleUrl = this_.attr("data-href")
-  var voteCountAPIUrl = $(".upvote-count").attr("data-href");
+  var voteCountAPIUrl = this_.next(".upvote-count").attr("data-href");
   $.ajax({
     url: upvoteToggleUrl,
     method: 'GET',
@@ -17,7 +18,7 @@ $(".upvote-btn").click(function(e){
         data: {},
         success: function(data){
           console.log(data.upvotes)
-          $('.upvote-count').text(data.upvotes);
+          this_.next('.upvote-count').text(data.upvotes);
         }, error: function(error){
           console.log(error)
           console.log("error")
@@ -36,7 +37,7 @@ $(".downvote-btn").click(function(e){
   e.preventDefault()
   var this_ = $(this)
   var downvoteToggleUrl = this_.attr("data-href")
-  var voteCountAPIUrl = $(".downvote-count").attr("data-href");
+  var voteCountAPIUrl = this_.next(".downvote-count").attr("data-href");
   $.ajax({
     url: downvoteToggleUrl,
     method: 'GET',
@@ -48,7 +49,7 @@ $(".downvote-btn").click(function(e){
         data: {},
         success: function(data){
           console.log(data.downvotes)
-          $('.downvote-count').text(data.downvotes);
+          this_.next('.downvote-count').text(data.downvotes);
         }, error: function(error){
           console.log(error)
           console.log("error")
