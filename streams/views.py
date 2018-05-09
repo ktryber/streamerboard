@@ -5,6 +5,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import (ListView, DetailView, UpdateView, CreateView,
                                 DeleteView, FormView, View)
 from django.shortcuts import get_object_or_404
+from django.db.models import Count
 from django.views.generic import RedirectView
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -21,8 +22,11 @@ from django.views.decorators.csrf import csrf_exempt
 
 
 def streams_list(request):
+    streams_ranked = StreamPost.objects.annotate(q_count=Count('upvotes')) \
+                                        .order_by('-q_count')
     context = {
         'all_posts': StreamPost.objects.reverse(),
+        'streams_ranked' : streams_ranked,
         'form': StreamPostForm()
     }
     return render(request, 'streams/index.html', context)
