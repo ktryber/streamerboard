@@ -27,23 +27,24 @@ embed.addEventListener(Twitch.Embed.VIDEO_READY, () => {
   player.play();
 });
 </script>
+<div id='stream-list'>
 <div class="row">
   <div class="col-sm-3 voting-buttons">
-    <a class="upvote-btn" data-href='{{ streampost.get_api_upvote_url }}'
-    href='{{ streampost.get_upvote_url }}'><i class="fas fa-thumbs-up"></i></a>
+    <a class="upvote-btn" data-api-upvote='{{ streampost.get_api_upvote_url }}'
+    href='{{ stream.get_upvote_url }}'><i class="fas fa-thumbs-up"></i></a>
 
-    <span class="upvote-count" data-href="{% url 'streams:vote-count' pk=streampost.pk %}">
+    <span id="upvote-count" data-upvotes="{% url 'streams:vote-count' pk=streampost.pk %}">
       {{ streampost.upvotes.count }}
     </span>
 
 
-    <a class="downvote-btn" data-href="{{ streampost.get_api_downvote_url }}"
+    <a class="downvote-btn" data-api-downvote="{{ streampost.get_api_downvote_url }}"
     href='{{ streampost.get_downvote_url }}'><i class="fas fa-thumbs-down"></i></a>
 
-    <span class="downvote-count" data-href="{% url 'streams:vote-count' pk=streampost.pk %}">
+    <span id="downvote-count" data-downvotes="{% url 'streams:vote-count' pk=streampost.pk %}">
         {{ streampost.downvotes.count }}
     </span>
   </div>
 </div>
-
+</div>
 {% endblock %}

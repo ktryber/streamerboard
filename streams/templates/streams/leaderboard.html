@@ -1,0 +1,46 @@
+{% extends 'base.html'%}
+{% load static %}
+{% block content %}
+<h1>Streams</h1>
+<div class="jumbotron">
+  <p>
+    Welcome to the streamerboard, get ranked and vote for your favorite
+    streamers
+  </p>
+</div>
+  <div class="row">
+    <div class="col-md-12">
+      <div id='stream-list'>
+          <div class="post-list-box">
+            <h1 class="stream-title">{{ stream.title }}</h1>
+
+            <h4 class="stream-description">{{ stream.description }}</h4>
+
+            <a class="btn btn-warning " href="#">
+            View Stream</a>
+            <p>comment area</p>
+
+            <div class="row">
+              <div class="col-sm-3 voting-buttons">
+                <a class="upvote-btn" data-href='{{ stream.get_api_upvote_url }}'
+                href='{{ stream.get_upvote_url }}'><i class="fas fa-thumbs-up"></i></a>
+
+                <span class="upvote-count" data-href="#">
+                  {{ stream.upvotes.count }}
+                </span>
+
+
+                <a class="downvote-btn" data-href="{{ stream.get_api_downvote_url }}"
+                href='{{ stream.get_downvote_url }}'><i class="fas fa-thumbs-down"></i></a>
+
+                <span class="downvote-count" data-href="#}">
+                    {{ stream.downvotes.count }}
+                </span>
+              </div>
+            </div>
+          </div>
+      </div>
+    </div>
+  </div>
+
+{% endblock %}

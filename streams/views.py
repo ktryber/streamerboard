@@ -9,6 +9,7 @@ from django.db.models import Count
 from django.views.generic import RedirectView
 from rest_framework.views import APIView
 from rest_framework.response import Response
+from rest_framework import viewsets
 from rest_framework import authentication, permissions
 from django.contrib.auth.models import User
 from decouple import config
@@ -17,19 +18,22 @@ import json
 from . models import StreamPost
 from . forms import StreamPostForm
 
+from django.template.loader import render_to_string
+
 from django.views.decorators.csrf import csrf_exempt
 # Create your views here.
 
 
 def streams_list(request):
     streams_ranked = StreamPost.objects.annotate(q_count=Count('upvotes')) \
-                                        .order_by('-q_count')
+                                    .order_by('-q_count')
     context = {
-        'all_posts': StreamPost.objects.reverse(),
         'streams_ranked' : streams_ranked,
         'form': StreamPostForm()
     }
+
     return render(request, 'streams/index.html', context)
+
 
 def api_view(request):
     # https://api.twitch.tv/kraken/videos/top?game=CS:GO
@@ -140,6 +144,7 @@ class StreamUpvoteToggle(RedirectView):
             else:
                 obj.upvotes.add(user)
         return url_
+
 class StreamDownvoteAPIToggle(APIView):
     """
     View to list all users in the system.
@@ -198,4 +203,27 @@ class StreamUpvoteDownvoteCountAPIView(APIView):
             "upvotes" : upvote_count,
             "downvotes" : downvote_count,
         }
+        return Response(data)
+
+from collections import OrderedDict
+from operator import itemgetter
+
+class StreamListRankedAPIView(APIView):
+    authentication_classes = (authentication.SessionAuthentication,)
+    permission_classes = (permissions.IsAuthenticated,)
+
+    def get(self, request, format=None):
+        # streams_ranked = StreamPost.objects.annotate(q_count=Count('upvotes')) \
+        #                                     .order_by('-q_count')
+
+
+        streams_list = StreamPost.objects.all()
+        streams_ranked = [{'id':stream.pk, 'upvotes': stream.upvotes.count(), \
+                            'title':stream.title, 'description': stream.description} \
+                                                    for stream in streams_list]
+
+        sorted_list = sorted(streams_ranked, key=itemgetter('upvotes'), reverse=True)
+        data = {
+            "sorted_list": sorted_list
+                    }
         return Response(data)

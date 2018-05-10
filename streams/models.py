@@ -20,10 +20,10 @@ class StreamPost(models.Model):
     def get_absolute_url(self):
         return reverse("streams:detail", kwargs={"pk": self.pk})
 
-    def get_upvote_url(self):
+    def get_upvote_url(self, request):
         return reverse("streams:upvote-toggle", kwargs={'pk': self.pk})
 
-    def get_downvote_url(self):
+    def get_downvote_url(self, request):
         return reverse("streams:downvote-toggle", kwargs={'pk': self.pk})
 
     def get_api_upvote_url(self):
@@ -31,6 +31,3 @@ class StreamPost(models.Model):
 
     def get_api_downvote_url(self):
         return reverse("streams:downvote-api-toggle", kwargs={'pk': self.pk})
-
-    class Meta:
-        ordering = ['created']

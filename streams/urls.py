@@ -2,13 +2,16 @@
 from django.conf.urls import url, include
 from . views import (streams_list, api_view, AddStreamModalView,
                     StreamDetailView, create_post, StreamUpvoteAPIToggle,
-                    StreamDownvoteAPIToggle, StreamUpvoteToggle, StreamDownvoteToggle,
-                    StreamUpvoteDownvoteCountAPIView)
+                    StreamDownvoteAPIToggle, StreamDownvoteToggle,
+                    StreamUpvoteDownvoteCountAPIView, StreamListRankedAPIView,
+                     StreamUpvoteToggle)
+
 
 app_name = 'streams'
 
 urlpatterns = [
     url(r'^$', streams_list, name='all-streams'),
+    # url(r'^leaderboard/$', leaderboard_list_view, name='leaderboard'),
     # url(r'^api/', api_view, name='api'),
     url(r'^create_post/$', create_post, name='create_post'),
     url(r'^add_stream/$', AddStreamModalView.as_view(), name='add_stream'),
@@ -21,4 +24,6 @@ urlpatterns = [
                                                     name='downvote-api-toggle'),
     url(r'^api/(?P<pk>\d+)/vote_count/$', StreamUpvoteDownvoteCountAPIView.as_view(),
                                                     name='vote-count'),
+    url(r'^api/streams_ranked/$', StreamListRankedAPIView.as_view(),
+                                                    name='streams-ranked'),
 ]

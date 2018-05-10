@@ -21,40 +21,10 @@
   </form>
   {% endif %}
 </div>
-<div class="row">
-  <div class="col-md-12">
-    <div id='stream-list'>
-      {% for stream in streams_ranked %}
-        <div class="post-list-box">
-          <h1>{{ stream.title }}</h1>
-          <h4>{{ stream.description }}</h4>
-          <a class="btn btn-warning " href="{% url 'streams:detail' pk=stream.pk %}">
-          View Stream</a>
-          <p>comment area</p>
-
-          <div class="row">
-            <div class="col-sm-3 voting-buttons">
-              <a class="upvote-btn" data-href='{{ stream.get_api_upvote_url }}'
-              href='{{ stream.get_upvote_url }}'><i class="fas fa-thumbs-up"></i></a>
-
-              <span class="upvote-count" data-href="{% url 'streams:vote-count' pk=stream.pk %}">
-                {{ stream.upvotes.count }}
-              </span>
-
-
-              <a class="downvote-btn" data-href="{{ stream.get_api_downvote_url }}"
-              href='{{ stream.get_downvote_url }}'><i class="fas fa-thumbs-down"></i></a>
-
-              <span class="downvote-count" data-href="{% url 'streams:vote-count' pk=stream.pk %}">
-                  {{ stream.downvotes.count }}
-              </span>
-            </div>
-          </div>
-        </div>
-      {% endfor %}
-    </div>
-  </div>
-
+<div id='stream-list'>
+  <tbody class='table_body'>
+  {% include 'streams/leaderboard_list.html' %}
+  </tbody>
 </div>
 
 <!-- Modal -->
